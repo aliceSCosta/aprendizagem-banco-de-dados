@@ -1,0 +1,313 @@
+1 ------------------------
+
+INTRODUÇÃO
+
+SQL é uma linguagem de consulta de banco de dados que utiliza um 
+padrão que chamamos de "padrão ansi" que é muito parecido em diversos
+bancos de dados relacionais.
+
+O SQL Server, não é somente um banco de dados relacional, ele tem uma
+série de outras estruturas, como por exemplo, uma estrutura de banco 
+de dados multidimensional e uma estrutura de criação de relatórios, 
+além de ter uma ferramenta de manipulação de dados que chamamos de 
+"integration services".
+
+
+
+INSTALANDO O SQL SERVER
+
+Nós iremos instalar dois softwares: o SQL Server versão 2017 (BANCO DE DADOS)
+developer edition e o SQL Server 2017 Management Studio (INTERFACE
+DE MANIPULAÇÃO DO BANCO DE DADOS).
+
+Abrir o pacote instalado > Personalizado > Instalar >
+"nova instalação autônoma do SQL Server ou adicionar recursos a 
+uma instalação existente". > Avançar > Serviços do mecanismo do banco
+de dados > Avançar > Manter a instância padrão > Avançar > Avançar >
+Modo Misto > Colocar senha do usuário SA (S3nh4@987) > Adicionar usuário
+local para ser o administrador > Avançar
+
+
+INSTALANDO O SQL SERVER MANAGEMENT STUDIO
+
+Abrir instalador > Instalar
+
+
+O QUE APRENDEMOS?
+
+Nesta aula, aprendemos a:
+
+Instalar o SQL Server 2017
+Instalar o SQL Server Management Studio 2017
+Configurar o SQL Server 2017
+
+----------------------------------------------------------------
+
+
+2 - MANIPULANDO O BANCO DE DADOS
+
+DEFINIÇÕES
+
+Num servidor SQL Server, eu posso ter um ou mais bancos de dados.
+
+SQL Server (Servidor) 
+Banco de Dados (Entidade do servidor)
+
+Esse banco de dados possui dentro dele diversas subdivisões, várias 
+coisas dentro dele que compõem um banco de dados.
+
+Bem, a primeira entidade básica é a tabela. É na tabela em que o dado
+está armazenado. A tabela possui campos que são basicamente colunas, 
+e possui registros, que são as linhas.
+
+cada campo deste, possui um único tipo, e todo dado que estiver nessa
+coluna, só pode ser desse tipo. O que são esses tipos? São números, 
+caracteres, caracteres alfanuméricos, campos binários onde vou salvar
+por exemplo bytes de um arquivo.
+
+A tabela também possui uma definição chamada "chave primária". 
+O que é chave primária? Eu associo alguns campos a essa entidade 
+chamada "chave primeira", e quando o campo estiver associado a chave 
+primária, o seu conteúdo não pode se repetir dentro das linhas ou do 
+registros.
+
+Eu posso ter chaves primárias compostas. Por exemplo, digamos que eu 
+tenha uma tabela com produtos e eu diga que não posso vender o mesmo 
+produto para um mesmo cliente.
+
+Também nós temos o que chamamos de "chave estrangeira". A chave 
+estrangeira é uma ligação entre uma tabela e outra. Chamamos aqui de 
+"relacionamento". É claro, o nosso banco de dados SQL Server, é uma 
+banco de dados relacional. Esse nome "relacional" vem porque eles 
+possuem tabelas que se relacionam.
+
+Uma tabela também pode ter um índice. O que é o índice? É basicamente
+é uma estrutura que facilita a minha busca.
+
+Digamos que eu queira, por exemplo, buscar o cliente cujo CPF é "999".
+Se por acaso o campo CPF não possui índice, o que o banco de dados 
+vai fazer? Ele vai percorrer cada registro da minha tabela e ir 
+testando, "esse cara é o CPF "999"? Não, opa, próximo", "ele é o 
+"999"? Não, vou para o próximo", e assim ele vai seguindo registro a 
+registro, até ele achar o registro em que o cliente é o "999" e vai 
+me retornar o resultado.
+
+Então, por exemplo, se eu quero buscar o cliente "999" e o código 
+CPF desse cliente é índice, o que o banco de dados vai fazer é, ao 
+invés de ir na tabela linha a linha, vai na tabela de índice, que é 
+menor, mais enxuta, vai buscar rapidamente o CPF "999" e lá vai dizer
+o seguinte "o cliente "999" está na posição 28".
+
+Uma observação: quando um campo é chave primária, automaticamente 
+ele também é índice.
+
+Eu posso pegar um grupo de tabelas dentro do mesmo banco de dados e 
+criar como se fosse uma classificação para ele. Isso nós chamamos de 
+"esquemas".
+
+A visão é uma estrutura lógica dentro do banco de dados, na verdade, 
+não existe fisicamente.
+
+Uma outra entidade importante dentro do banco de dados são as 
+"procedures". As "procedures" são processos que vão processar 
+alguma coisa no meu banco de dados.
+
+Essas "procedures" podem fazer manipulação de dados, ou seja, pegar 
+dados de uma tabela e colocar em outros, fazer cálculos e esse 
+cálculos salvarem outra tabelas…
+
+Como podem ser o que nós chamamos de "funções", que na verdade, vão 
+trazer um resultado. Eu posso criar uma função no SQL Server que 
+me retorne, por exemplo, o último dia do mês, ou a próxima 
+segunda-feira a contar do dia de hoje.
+
+Como podem ser o que nós chamamos de "funções", que na verdade, vão 
+trazer um resultado. Eu posso criar uma função no SQL Server que me 
+retorne, por exemplo, o último dia do mês, ou a próxima segunda-feira
+a contar do dia de hoje.
+
+As trigger são muito usadas, por exemplo: quando eu atualizo uma 
+tabela, eu automaticamente tenho que disparar um processo de cálculo 
+ou um outro processo para que aquela informação, também seja salva 
+numa segunda tabela.
+
+Nós definimos nessa aula quatro importantes entidades de um banco de 
+dados: tabelas, que possuem suas características, como os campos, 
+os registros, chaves primárias e estrangeiras. Definimos as visões, 
+as procedures (funções) e as triggers.
+
+
+
+CRIANDO BANCO DE DADOS
+
+CREATE DATABASE SUCOS_VENDA_01 (criar um banco de dados)
+
+CREATE DATABASE SUCOS_VENDAS_02
+ON 
+(NAME = SUCOS_VENDAS_DAT, [**Define o nome da partição onde os dados vão ser armazenados]
+FILENAME = 'C:\Codes\Alura\SQL Server\Sales_Vendas_02.mdf', [**Localização do arquivo que irá armazenar os dados]
+[**A extensão MDF é o tipo de arquivo do SQL Server que armazena os dados]
+SIZE = 10, [**Tamanho inicial do arquivo]
+MAXSIZE = 50, [**Tamanho máximo do arquivo]
+FILEGROWTH = 5) [*De quanto em quanto o arquivo vai crescer*]
+LOG ON [**Cria um arquivo que mantém todos os registros do que acontece no banco de dados]
+(NAME = SUCOS_VENDAS_LOG, [**Nome da particão] 
+FILENAME = 'C:\Codes\Alura\SQL Server\Sales_Vendas_02.ldf',
+SIZE = 10,
+MAXSIZE = 50,
+FILEGROWTH = 5)
+
+
+CRIANDO BANCO DE DADOOS ATRAVÉS DE ASSISTENTE
+
+- Clique direito sobre "Banco de dados"
+- Clique na opção "Novo banco de dados"
+- Preencha as informações da caixa de diálogo (Nome do BD)
+- Clique em OK
+
+
+APAGANDO BANCO DE DADOS
+
+DROP DATABASE [nome da tabela]
+
+Com Assistente
+
+- Clique direito sobre o BD 
+- Excluir
+
+
+O QUE APRENDEMOS
+
+- A mexer com o SQL Server Management Studio, tendo o primeiro contato com o mesmo;
+- A criar banco de dados, tanto por script quanto pelo assistente;
+- Como apagar um banco de dados.
+
+
+03 - GERENCIANDO AS TABELAS DO BANCO DE DADOS
+
+TIPOS DE DADOS
+
+Nós temos vários tipos, que são organizados em grupos. O primeiro grupo que eu estou mostrando aqui em cima, são os numéricos exatos. 
+Ele tem esse nome "numéricos exatos", porque eu defino muito bem o tamanho e o número de casas decimais que esses números vão ter.
+
+O Bigint, como o próprio nome em inglês diz, é um inteiro grande, ou seja, é um número que não tem casa decimal, ele vai de -2^63 a +2^63-1.
+
+O Numeric, é um número com casas decimais, porém, com casas decimais fixas. No Numeric, eu posso definir números de até 38 casas decimais.
+
+O Bit, é um inteiro que me dá o valor 1 ou 0.
+
+O Smallint, é um inteiro menor que tem as mesmas definições do Bigint e cujo os limites são um pouco menores do que o Bigint.
+
+O Decimal é igual ao Numeric em sua definição.
+
+Smallmoney. Normalmente um campo money representa valores financeiros, e além de ter casas decimais, esse valores financeiros 
+são representados dentro do banco de dados com um prefixo, que é o símbolo da moeda que ele representa.
+
+O Int, é o inteiro cujo o tamanho está entre o Bit e o Smallint. Ele vai de -2^31 a +2^31-1.
+
+O Tinyint, é um inteiro bem pequeno, eu o represento de 0 a 255.
+
+O Money, já é a representação de valores financeiros um pouco maior. Na verdade, muito maior, vai de -922.337.203.685.477.
+
+
+Partiremos para o segundo grupo: os numéricos aproximados.
+
+Eles têm esse nome, porque na verdade, fazem um arredondamento, são o que chamamos de "números com ponto flutuante". 
+Nós temos dois tipos: o Float e o Real.
+
+O Float é o número que tem um range de tamanho, muito maior, ou seja, a sua representação é muito maior. 
+Enquanto o Real, é esse número com um limite um pouco menor.
+
+Data e hora: Os campos do tipo data e hora, representam algum período do tempo.
+
+O DateTimeOffset, é o ano/mês/dia, com hora/minuto/segundo, porém, com a informação do fuso horário.
+
+DateTime2: eu vejo a data, porém só com hora e minuto, o segundo sempre vai vir 00.
+
+O Smalldate, é a data com a hora apenas, não tem minutos e não tem segundos.
+
+O Datetime, nessa sim tenho a data, com a hora, minuto e segundo, porém, não tem a representação do fuso horário. 
+
+E com o Time, eu só vejo a representação da hora.
+
+
+
+Cadeia de caracteres: nós temos dois grupos, as unicodes e as não unicodes.
+
+Primeiro, eu tenho o Char, o Varchar e o Texto. Os três são cadeias de caracteres não unicode. 
+Sendo que o Char tem o valor fixo de 1 a 8000. O Varchar, também.
+
+A diferença do Char e do Varchar, é a seguinte: o Varchar tem o tamanho variável, ou seja, se eu digo que o meu Varchar é tamanho 10, 
+mas eu salvo no campo uma palavra com dois caracteres, ele só vai armazenar aqueles dois caracteres.
+
+Se o campo é um Char de 10, e eu gravo o mesmo campo com dois caracteres, ele vai ter que salvar dois caracteres e oito caracteres vazios, 
+ou seja, ele vai ocupar os dez caracteres. 
+
+O Varchar tem um parâmetro chamado Max, que é para eu representar caracteres muito grandes. 
+Se o campo for um Varchar de Max, ele pode receber até dois gigabytes de tamanho.
+
+E o campo Texto, é uma cadeia de caracteres não unicode, mas que representa dados maiores do que o Varchar pode armazenar, ou dados binários.
+
+Bem, nChar, nVarchar e nTexto, têm as mesmas definições que o Char, o Varchar e Texto, porém, agora, são caracteres unicode.
+
+o que significa "unicode"? Unicode significa uma cadeia de caracteres que fornece num único conjunto de dados, 
+todos os caracteres de todos os idiomas do mundo.
+
+Nós, ocidentais, português e línguas latinas, por exemplo, usamos o abecedário normal, que vai de A a Z. 
+Porém, existem outras línguas como o russo, grego, hebraico, árabe. As línguas orientais, como por exemplo, chinês, coreano, japonês, 
+que utilizam uma cadeia de caracteres diferentes, são outros símbolos, outras formas de representar as letras.
+
+Então, se eu vou armazenar no meu banco de dados uma informação que possui caracteres diferentes dos normais, tenho que usar o nVarchar 
+ou nChar ou nTexto, porque ele vai acertar cadeias de caracteres unicode.
+
+Finalmente, caracteres binários, que representam dados de, por exemplo: eu tenho lá no meu diretório um arquivo-texto salvo. 
+Eu posso pegar aquele arquivo-texto e salvar num campo do meu SQL Server. Ele será salvo como "binário".
+
+A mesma coisa vai acontecer com o VarBinário. A diferença, está no tamanho. O Binário armazena até 8.000 caracteres de tamanho, 
+enquanto o VarBinário, chega até q 2^31-1 caracteres.
+
+
+CRIANDO A PRIMEIRA TABELA
+
+-- Criar tabela
+
+CREATE TABLE [TABELA DE CLIENTES] -- Colocar entre colchetes se o nome tiver caracteres especiais
+( CPF VARCHAR(11), 
+NOME VARCHAR(100),
+[ENDERECO 1] VARCHAR(150),
+[ENDERECO 2] VARCHAR(150),
+BAIRRO VARCHAR(50),
+CIDADE VARCHAR(50),
+ESTADO VARCHAR(2),
+CEP [VARCHAR](8),
+[DATA DE NASCIMENTO] DATE,
+IDADE SMALLINT,
+SEXO VARCHAR(1),
+[LIMITE DE CREDITO] [MONEY],
+[VOLUME DE COMPRA] [FLOAT],
+[PRIMEIRA COMPRA] BIT)
+
+
+CREATE TABLE [TABELA DE VENDEDORES]
+(MATRICULA VARCHAR(5),
+NOME VARCHAR(100),
+[PERCENTUAL COMISSAO] FLOAT)
+
+
+CRIANDO TABELA ATRAVÉS DE ASSISTENTE
+
+Clique direito em cima de "Tabelas" > Novo > Tabela > Preencher Nome dos campos > Salvar > Informar nome da tabela
+
+
+APAGANDO TABELA
+
+-- Deletar uma tabela
+
+DROP TABLE [TABELA DE CLIENTES 2]
+
+
+O QUE APRENDEMOS?
+
+Os tipos de dados que compõem uma tabela;
+Como criar uma tabela, tanto por script quanto por assistente;
+Como apagar uma tabela.
